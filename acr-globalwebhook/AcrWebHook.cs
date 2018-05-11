@@ -48,6 +48,11 @@ namespace acr_globalwebhook
                 log.Error("*** TRIGGER: region querystring value missing");
                 return request.CreateResponse(HttpStatusCode.BadRequest, "region querystring value missing", new JsonMediaTypeFormatter());
             }
+            if (!GetRegions().Any(r => r.ToLowerInvariant() == region.ToLowerInvariant()))
+            {
+                log.Error("*** TRIGGER: region querystring value is not in the configured regions for the function");
+                return request.CreateResponse(HttpStatusCode.BadRequest, "region querystring value is not in the configured regions for the function", new JsonMediaTypeFormatter());
+            }
 
             var notification = await request.Content.ReadAsAsync<WebHookNotification>();
             var instanceId = notification.Id;
