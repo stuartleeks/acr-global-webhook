@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2000
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "acr-globalwebhook", "acr-globalwebhook\acr-globalwebhook.csproj", "{BEBA00D5-326C-4B80-8893-683875F4C70B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "acr-globalwebhook", "acr-globalwebhook\acr-globalwebhook.csproj", "{BEBA00D5-326C-4B80-8893-683875F4C70B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
