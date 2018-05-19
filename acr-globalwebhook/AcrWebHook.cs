@@ -30,12 +30,9 @@ namespace acr_globalwebhook
             return TimeSpan.Parse(config);
         }
 
-
-        // TODO - switch to AuthorizationLeve.Function!!
-
         [FunctionName("ImagePush")]
         public static async Task<HttpResponseMessage> ImagePush(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")]
+            [HttpTrigger(AuthorizationLevel.Function, "get", "post")]
             HttpRequestMessage request,
             [OrchestrationClient]
             DurableOrchestrationClient starter,
@@ -56,7 +53,7 @@ namespace acr_globalwebhook
 
             var notification = await request.Content.ReadAsAsync<WebHookNotification>();
             var instanceId = notification.Id;
-            log.Info($"got id {instanceId}");
+            log.Info($"**TRIGGER: Notification for {notification.Target.Repository}:{notification.Target.Tag} - action {notification.Action} - id:{instanceId}");
 
             // Find or start an orchestration instance
             log.Info($"*** TRIGGER: Looking up instance: {instanceId}");
@@ -92,6 +89,12 @@ namespace acr_globalwebhook
             // Wait for external event notifications from each region
             var eventTasks = GetRegions()
                                 .Select(region => context.WaitForExternalEvent<object>(GetEventName(region)));
+
+            var eventTaskList = new System.Collections.Generic.List<Task>();
+            foreach (var region in GetRegions())
+            {
+                eventTaskList.Add(context.WaitForExternalEvent<object>(GetEventName(region)));
+            }
             Task replicationCompletedTask = Task.WhenAll(eventTasks);
 
             // wait until tasks complete or we time-out...
