@@ -26,7 +26,11 @@ namespace acr_globalwebhook
         private static string GetEventName(string region) => $"pushevent-{region}";
         private static TimeSpan GetTimeOutInterval()
         {
-            var config = Environment.GetEnvironmentVariable("WebhookTimeOut"); // TODO add error handling!
+            var config = Environment.GetEnvironmentVariable("WebhookTimeOut"); 
+            if (string.IsNullOrEmpty(config))
+            {
+                return new TimeSpan(hours: 0, minutes: 2, seconds: 0);
+            }
             return TimeSpan.Parse(config);
         }
 
