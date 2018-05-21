@@ -62,7 +62,7 @@ namespace acr_globalwebhook
 
             var notification = await request.Content.ReadAsAsync<WebHookNotification>();
             var instanceId = notification.Id;
-            log.Info($"**TRIGGER: Notification for {notification.Target.Repository}:{notification.Target.Tag} - action {notification.Action} - id:{instanceId}");
+            log.Info($"**TRIGGER: Notification for {notification.Target.Repository}:{notification.Target.Tag} - action {notification.Action} - id:{instanceId} - region {region}");
 
             // Find or start an orchestration instance
             log.Info($"*** TRIGGER: Looking up instance: {instanceId}");
