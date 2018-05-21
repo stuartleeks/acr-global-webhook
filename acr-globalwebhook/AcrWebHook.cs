@@ -17,7 +17,12 @@ namespace acr_globalwebhook
         private static string[] GetRegions()
         {
             // currently pulling from config, but could query ARM or ...
-            return Environment.GetEnvironmentVariable("WebhookRegions") // TODO add error handling!
+            var regionConfigValue = Environment.GetEnvironmentVariable("WebhookRegions");
+            if (string.IsNullOrEmpty(regionConfigValue))
+            {
+                throw new Exception("WebhookRegions not configured in AppSettings for Function");
+            }
+            return regionConfigValue
                             .Split(',')
                             .Select(s => s.Trim())
                             .ToArray();
